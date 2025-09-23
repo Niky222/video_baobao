@@ -11,7 +11,10 @@ jobs:
     steps:
       - name: 📥 Клонируем репозиторий
         uses: actions/checkout@v3
-
+        
+      - name: 🔧 Устанавливаем ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+        
       - name: 🐍 Устанавливаем Python
         uses: actions/setup-python@v4
         with:
