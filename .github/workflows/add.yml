@@ -2,7 +2,7 @@ name: Run Shorts Script
 
 on:
   schedule:
-    - cron: "0 */5 * * *"  # каждые 5 часов
+    - cron: "0 */12 * * *"  # каждые 5 часов
   workflow_dispatch:  
   
 permissions:
