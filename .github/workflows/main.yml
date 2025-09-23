@@ -12,6 +12,12 @@ jobs:
       - name: 📥 Клонируем репозиторий
         uses: actions/checkout@v3
         
+      - name: 📥 Скачиваем базу (если есть)
+        uses: actions/download-artifact@v4
+        with:
+          name: video-db
+          path: .
+          
       - name: 🔧 Устанавливаем ffmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
         
@@ -27,6 +33,13 @@ jobs:
       - name: 🚀 Запускаем donload.py
         run: |
           python download_video.py
+
+      - name: 📤 Сохраняем обновленную базу
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-db
+          path: ./videos.db
+          overwrite: true
           
       - name: 📦 Загружаем видео как артефакт
         uses: actions/upload-artifact@v4
