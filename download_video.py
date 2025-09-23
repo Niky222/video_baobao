@@ -45,6 +45,7 @@ def download_youtube_video(video_id, output_file):
 
 if __name__ == "__main__":
     new_videos = [v for v in get_all_video_ids() if v["status"] == "new"]
-
+    print(get_all_video_ids())
     main_video_id = new_videos[0]['video_id']
     download_youtube_video(main_video_id, "main.mp4")
+    print(get_all_video_ids())
