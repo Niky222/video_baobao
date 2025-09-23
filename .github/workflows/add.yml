@@ -3,7 +3,10 @@ name: Run Shorts Script
 on:
   schedule:
     - cron: "0 */5 * * *"  # каждые 5 часов
-  workflow_dispatch:        # позволяет запускать вручную
+  workflow_dispatch:  
+  
+permissions:
+  contents: write  # ✅ даём права на запись в репо
 
 jobs:
   run:
