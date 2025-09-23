@@ -17,6 +17,10 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: 📦 Устанавливаем зависимости
+        run: |
+          pip install -r requirements.txt
+
       - name: 🚀 Запускаем hourly_script.py
         run: |
           python main.py
