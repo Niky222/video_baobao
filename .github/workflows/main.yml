@@ -21,6 +21,14 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: 🚀 Запускаем hourly_script.py
+      - name: 🚀 Запускаем donload.py
         run: |
-          python main.py
+          python download_video.py
+
+      - name: 🚀 Запускаем edit.py
+        run: |
+          python edit_video.py
+          
+      - name: 🚀 Запускаем upload.py
+        run: |
+          python upload_video.py
