@@ -24,7 +24,13 @@ jobs:
       - name: 🚀 Запускаем donload.py
         run: |
           python download_video.py
-
+          
+      - name: 📦 Загружаем видео как артефакт
+        uses: actions/upload-artifact@v3
+        with:
+          name: edited-video
+          path: main.mp4
+          
       - name: 🚀 Запускаем edit.py
         run: |
           python edit_video.py
