@@ -37,6 +37,12 @@ jobs:
       - name: 🚀 Запускаем edit.py
         run: |
           python edit_video.py
+
+      - name: 📦 Загружаем видео как артефакт
+        uses: actions/upload-artifact@v4
+        with:
+          name: edited-video
+          path: res.mp4
           
       - name: 🚀 Запускаем upload.py
         run: |
