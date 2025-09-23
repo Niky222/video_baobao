@@ -1,5 +1,4 @@
 requests
-json
 subprocess
 feedparser
-sqlite3
+
