@@ -26,7 +26,7 @@ jobs:
           python download_video.py
           
       - name: 📦 Загружаем видео как артефакт
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: edited-video
           path: main.mp4
