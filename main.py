@@ -5,7 +5,6 @@ import feedparser
 from sql import init_db, save_video_id, get_all_video_ids, update_video_status
 
 
-# --- Функция для получения ссылки на видео и скачивания ---
 def download_youtube_video(video_id, output_file):
     api_url = f"https://youtube-video-fast-downloader-24-7.p.rapidapi.com/download_short/{video_id}"
     headers = {
@@ -17,33 +16,37 @@ def download_youtube_video(video_id, output_file):
         "quality": 247
     }
 
-    # Получаем JSON с ссылкой на видео
-    response = requests.get(api_url, headers=headers, params=params )
+    print(f"📥 Скачиваем видео ID: {video_id} ...")
+    response = requests.get(api_url, headers=headers, params=params)
+
     if response.status_code != 200:
-        raise Exception(f"Ошибка API: {response.status_code}, {response.text}")
+        print(f"❌ Ошибка API: {response.status_code}, {response.text}")
+        update_video_status(video_id, "failed", "videos.db")
+        return False
 
     data = response.json()
     print(json.dumps(data, indent=4, ensure_ascii=False))
 
-    # Предположим, что JSON содержит ключ 'download_url'
     video_url = data.get("file")
     if not video_url:
-        raise Exception(f"Ссылка на видео не найдена в JSON: {data}")
+        print(f"❌ Ссылка на видео не найдена в JSON.")
+        update_video_status(video_id, "failed", "videos.db")
+        return False
 
-    # Скачиваем видео по полученной ссылке
-    print(f"Скачиваем видео {video_id} по ссылке {video_url}...")
     video_resp = requests.get(video_url, stream=True)
     if video_resp.status_code == 200:
         with open(output_file, "wb") as f:
             for chunk in video_resp.iter_content(chunk_size=8192):
                 if chunk:
                     f.write(chunk)
-        print(f"Видео {video_id} сохранено как {output_file}")
-
+        print(f"✅ Видео {video_id} сохранено как {output_file}")
         update_video_status(video_id, "downloaded", "videos.db")
-
+        return True
     else:
-        raise Exception(f"Ошибка при скачивании видео: {video_resp.status_code}")
+        print(f"❌ Ошибка при скачивании видео: {video_resp.status_code}")
+        update_video_status(video_id, "failed", "videos.db")
+        return False
+
 
 
 # --- Функция наложения видео через FFmpeg ---
