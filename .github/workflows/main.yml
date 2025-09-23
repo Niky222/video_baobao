@@ -2,7 +2,7 @@ name: Run Hourly Script
 
 on:
   schedule:
-    - cron: "0 * * * *"  # каждый час
+    - cron: "0 */4 * * *"  # каждый час
   workflow_dispatch:
   
 permissions:
