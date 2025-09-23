@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "0 * * * *"  # каждый час
   workflow_dispatch:
+  
+permissions:
+  contents: write  # ✅ даём права на запись в репо
 
 jobs:
   run-hourly:
