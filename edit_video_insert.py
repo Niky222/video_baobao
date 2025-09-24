@@ -30,4 +30,4 @@ def overlay_videos_ffmpeg(main_video, square_video, output_video):
 
 
 if __name__ == "__main__":
-    overlay_videos_ffmpeg("main.mp4", "bao.mp4", "res.mp4")
+    overlay_videos_ffmpeg("main.mp4", "insert.mp4", "res.mp4")
