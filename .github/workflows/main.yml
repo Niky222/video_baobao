@@ -2,7 +2,7 @@ name: Run Hourly Script
 
 on:
   schedule:
-    - cron: "0 */4 * * *"  # каждый час
+    - cron: "0 */8 * * *"  # каждый час
   workflow_dispatch:
   
 permissions:
@@ -48,7 +48,7 @@ jobs:
           
       - name: 🚀 Запускаем edit.py
         run: |
-          python edit_video.py
+          python edit_video_insert.py
 
       - name: 📦 Загружаем видео как артефакт
         uses: actions/upload-artifact@v4
