@@ -1,4 +1,4 @@
-name: Run Hourly Script
+name: Run insert
 
 on:
   schedule:
