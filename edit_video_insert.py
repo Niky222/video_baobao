@@ -11,7 +11,7 @@ def overlay_videos_ffmpeg(main_video, square_video, output_video):
     square_size = int(width / 1.5)
 
     # Позиция квадратного видео (по центру внизу)
-    x_pos = 0
+    x_pos = width/2
     y_pos = height - square_size + 50
 
     cmd = [
