@@ -33,6 +33,6 @@ def upload(social, video_path, title):
 
 
 if __name__ == "__main__":
-    upload(social ="tiktok", video_path="res.mp4", title="Изучайте китайский на https://baobao.by")
-    upload(social="youtube", video_path="res.mp4", title="Изучайте китайский на https://baobao.by")
-    upload(social="instagram", video_path="res.mp4", title="Изучайте китайский на https://baobao.by")
+    upload(social ="tiktok", video_path="res.mp4", title="Изучайте китайский на https://baobao.by #китайскийязык #китайский #реки #окитайском #китай #иероглифы #china")
+    upload(social="youtube", video_path="res.mp4", title="Изучайте китайский на https://baobao.by #китайскийязык #китай #китайскийонлайн #КитайскийДляНачинающих #Китайский #Shorts ")
+    upload(social="instagram", video_path="res.mp4", title="Изучайте китайский на https://baobao.by #китайскийязык #китайский #реки #окитайском #китай #иероглифы #china")
