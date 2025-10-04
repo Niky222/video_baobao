@@ -95,7 +95,7 @@ def overlay_videos_ffmpeg(main_video, insert_video, output_video):
 
 
 if __name__ == "__main__":
-    if get_video_duration(video_path: str) < 15:
+    if get_video_duration("main.mp4") < 15:
         concat_videos_ffmpeg("main.mp4", "insert.mp4", "res.mp4")
     else:     
         overlay_videos_ffmpeg("main.mp4", "insert.mp4", "res.mp4")
