@@ -1,50 +1,78 @@
 import requests
-import subprocess
-import json
-import feedparser
+import time
 from sql import init_db, save_video_id, get_all_video_ids, update_video_status
 
-def download_youtube_video(video_id, output_file):
-    api_url = f"https://youtube-video-fast-downloader-24-7.p.rapidapi.com/download_short/{video_id}"
-    headers = {
-        "x-rapidapi-host": "youtube-video-fast-downloader-24-7.p.rapidapi.com",
-        "x-rapidapi-key": "3a1024cc78msh53c77f4992c0ed9p1b62f6jsnc027eb0021d0"
-    }
+RAPIDAPI_HOST = "youtube-mp4-mp3-downloader.p.rapidapi.com"
+RAPIDAPI_KEY = "3a1024cc78msh53c77f4992c0ed9p1b62f6jsnc027eb0021d0"
 
+headers = {
+    "x-rapidapi-host": RAPIDAPI_HOST,
+    "x-rapidapi-key": RAPIDAPI_KEY
+}
+
+def download_youtube_video(video_id: str, output_file: str, poll_interval: int = 5, timeout: int = 300):
+    """
+    Скачивает YouTube-видео через RapidAPI.
+    - video_id: ID ролика YouTube
+    - output_file: имя выходного файла
+    - poll_interval: пауза между проверками прогресса (сек)
+    - timeout: максимальное время ожидания (сек)
+    """
+
+    # 1. Старт задачи
+    download_url = f"https://{RAPIDAPI_HOST}/api/v1/download"
     params = {
-        "quality": 247
+        "format": "720",
+        "id": video_id,
+        "audioQuality": "128",
+        "addInfo": "false"
     }
 
-    # Получаем JSON с ссылкой на видео
-    response = requests.get(api_url, headers=headers, params=params )
-    if response.status_code != 200:
-        raise Exception(f"Ошибка API: {response.status_code}, {response.text}")
+    print(f"Запускаем задачу для {video_id}...")
+    resp_download = requests.get(download_url, headers=headers, params=params)
+    resp_json = resp_download.json()
+    print("Ответ download:", resp_json)
 
-    data = response.json()
-    print(json.dumps(data, indent=4, ensure_ascii=False))
+    progress_id = resp_json.get("progressId")
+    if not progress_id:
+        raise ValueError("❌ Не удалось получить progressId")
 
-    # Предположим, что JSON содержит ключ 'download_url'
-    video_url = data.get("file")
-    if not video_url:
-        raise Exception(f"Ссылка на видео не найдена в JSON: {data}")
+    # 2. Опрос прогресса
+    progress_url = f"https://{RAPIDAPI_HOST}/api/v1/progress"
+    params_progress = {"id": progress_id}
 
-    # Скачиваем видео по полученной ссылке
-    print(f"Скачиваем видео {video_id} по ссылке {video_url}...")
-    video_resp = requests.get(video_url, stream=True)
-    if video_resp.status_code == 200:
+    download_link = None
+    elapsed = 0
+
+    print("Ожидаем готовности файла...")
+    while elapsed < timeout:
+        resp_progress = requests.get(progress_url, headers=headers, params=params_progress)
+        progress_json = resp_progress.json()
+        print("Ответ progress:", progress_json)
+
+        download_link = progress_json.get("downloadUrl")
+        if progress_json.get("finished") and download_link:
+            break
+
+        time.sleep(poll_interval)
+        elapsed += poll_interval
+
+    if not download_link:
+        raise TimeoutError(f"❌ Видео не готово за {timeout} секунд")
+
+    # 3. Скачивание файла
+    print(f"⬇️ Скачиваем: {download_link}")
+    with requests.get(download_link, stream=True) as r:
+        r.raise_for_status()
         with open(output_file, "wb") as f:
-            for chunk in video_resp.iter_content(chunk_size=8192):
+            for chunk in r.iter_content(chunk_size=8192):
                 if chunk:
                     f.write(chunk)
-        print(f"Видео {video_id} сохранено как {output_file}")
 
-
-    else:
-        raise Exception(f"Ошибка при скачивании видео: {video_resp.status_code}")
+    print(f"✅ Видео сохранено как {output_file}")
 
 if __name__ == "__main__":
     new_videos = [v for v in get_all_video_ids() if v["status"] == "new"]
-    print(get_all_video_ids())
+
     main_video_id = new_videos[0]['video_id']
     download_youtube_video(main_video_id, "main.mp4")
-    print(get_all_video_ids())
