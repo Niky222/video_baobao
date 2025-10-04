@@ -15,14 +15,13 @@ def get_latest_shorts():
             print(f"⚠️ Не удалось получить видео с канала {channel_id}")
             continue
 
-        # фильтруем только shorts
         for entry in feed.entries[:max_results]:
-            if "shorts/" in entry.link:  # проверка на формат Shorts
-                shorts_ids.append(entry.yt_videoid)
+            if "shorts/" in entry.link:  # проверка на Shorts
+                shorts.append((entry.yt_videoid, entry.title))
 
     init_db()  # создаём базу, если её ещё нет
-    for vid in shorts_ids:
-        save_video_id(vid)
+    for vid, title in shorts:
+        save_video_id(vid, title)
 
 if __name__ == "__main__":
     get_latest_shorts()
