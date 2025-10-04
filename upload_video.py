@@ -33,6 +33,12 @@ def upload(social, video_path, title):
 
 
 if __name__ == "__main__":
-    upload(social ="tiktok", video_path="res.mp4", title="Изучайте китайский на https://baobao.by #китайскийязык #китайский #реки #окитайском #китай #иероглифы #china")
-    upload(social="youtube", video_path="res.mp4", title="Изучайте китайский на https://baobao.by #китайскийязык #КитайскийДляНачинающих #Китайский")
-    upload(social="instagram", video_path="res.mp4", title="Изучайте китайский на https://baobao.by #китайскийязык #китайский #реки #окитайском #китай #иероглифы #china")
+    new_videos = [v for v in get_all_video_ids() if v["status"] == "new"]
+    main_video_title = new_videos[0]['title']
+    video_id = new_videos[0]['video_id']
+
+    upload(social ="tiktok", video_path="res.mp4", title="Изучайте китайский на https://baobao.by. " + main_video_title)
+    upload(social="youtube", video_path="res.mp4", title="Изучайте китайский на https://baobao.by. " + main_video_title)
+    upload(social="instagram", video_path="res.mp4", title="Изучайте китайский на https://baobao.by. " + main_video_title)
+
+    update_video_status(video_id, "downloaded", "videos.db")
