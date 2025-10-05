@@ -37,8 +37,8 @@ if __name__ == "__main__":
     main_video_title = new_videos[0]['title']
     video_id = new_videos[0]['video_id']
 
-    upload(social ="tiktok", video_path="res.mp4", title="Изучайте китайский на https://baobao.by. " + main_video_title)
-    upload(social="youtube", video_path="res.mp4", title="Изучайте китайский на https://baobao.by. " + main_video_title)
-    upload(social="instagram", video_path="res.mp4", title="Изучайте китайский на https://baobao.by. " + main_video_title)
+    upload(social ="tiktok", video_path="res.mp4", title="Изучайте китайский на https://baobao.by. " + main_video_title + " #fyp #viral #汉语 #китайскийязык #учимкитайский")
+    upload(social="youtube", video_path="res.mp4", title="Изучайте китайский на https://baobao.by. " + main_video_title + " #shorts #viral #汉语 #китайскийязык #учимкитайский")
+    upload(social="instagram", video_path="res.mp4", title="Изучайте китайский на https://baobao.by. " + main_video_title + "#reels #explore #изучениекитайского #китайскийязык")
 
     update_video_status(video_id, "downloaded", "videos.db")
